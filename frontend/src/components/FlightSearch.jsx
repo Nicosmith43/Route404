@@ -26,6 +26,16 @@ export default function FlightSearch({ defaultDeparture = "", defaultArrival = "
       return;
     }
 
+    // Validate departure date is not in the past
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const selectedDate = new Date(departureDate);
+
+    if (selectedDate < today) {
+      setError("Departure date cannot be in the past.");
+      return;
+    }
+
     setLoading(true);
     setError(null);
     setFlights(null);
@@ -78,6 +88,7 @@ export default function FlightSearch({ defaultDeparture = "", defaultArrival = "
             type="text"
             placeholder="Departure (e.g. DEN)"
             value={departure}
+            maxLength={3}
             onChange={(e) => setDeparture(e.target.value.toUpperCase())}
             required
           />
@@ -85,6 +96,7 @@ export default function FlightSearch({ defaultDeparture = "", defaultArrival = "
             type="text"
             placeholder="Destination (e.g. JFK)"
             value={arrival}
+            maxLength={3}
             onChange={(e) => setArrival(e.target.value.toUpperCase())}
             required
           />
